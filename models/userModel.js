@@ -30,10 +30,7 @@ const userSchema = new mongoose.Schema({
 		enum: ['day', 'morning']
 	},
 	rollNo: {
-		type: Number,
-		required: [true, 'student gotta have their roll number'],
-		unique: [true, 'this roll number is already used'],
-		default: 171743
+		type: Number
 	},
 	role: {
 		type: String,

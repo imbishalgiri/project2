@@ -33,7 +33,7 @@ class AddToPreTeacher extends React.Component {
 				<div className="container">
 				  <div className="row">
 				    <div className="col-md-8 m-auto">
-				      <h1 className="display-4 text-center">Add Pre Teacher</h1>
+				      <h3 className="display-5 text-center">ADD TEACHERS TO SYSTEM</h3>
 				      <h3 className="display-6 text-center">{submittedStatus}</h3>
 				      <form onSubmit={this.handleSubmit} className="row g-3">
 

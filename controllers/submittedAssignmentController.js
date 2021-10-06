@@ -50,3 +50,26 @@ exports.getAllSubmittedAssignments = catchAsync(async (req, res) => {
 			}
 		});
 });
+
+
+// updating submitted assignment whilst their Id is provided
+exports.updateSubmittedAssignment = catchAsync(async(req, res, next) => {
+
+		const updatedAssignment = await SubmittedAssignment.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			useFindAndModify: false,
+			runValidators: true
+		});
+
+		if(!updatedAssignment) {
+			return next(new appErr('cannot find assignment for this ID', 404));
+		}
+
+		res.status(201).json({
+			status: "success",
+			data: {
+				updatedAssignment
+			}
+		});
+
+});

@@ -1,7 +1,7 @@
 import { CODE_SEND_ERRORS } from './../actions/types';
 
 
-const initialState = {}
+const initialState = {status: ''}
 
 const codeCheckReducer = (state = initialState, action) => {
 	switch(action.type) {

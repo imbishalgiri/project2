@@ -21,9 +21,12 @@ import ConfirmTeacherCode from './components/auth/ConfirmTeacherCode';
 import RoutineUpload from './components/routine/RoutineUpload';
 import UserUpload from './components/pages/AddToUsers';
 import AddNotice from './components/admin/AddNotice';
+import ViewNotice from './components/admin/ViewNotice';
 import AddToPreTeacher from './components/pages/AddToPreTeacher';
 import PublishAssignment from './components/pages/PublishAssignment';
 import ViewAssignment from './components/student/ViewAssignment';
+import ViewSubmittedAssignments from './components/pages/ViewSubmittedAssignments';
+import PostItems from './components/posts/PostItems';
 
 import './App.css';
 
@@ -43,10 +46,11 @@ if (localStorage.jwtToken) {
 
 class App extends Component {
 
+
 	render() {
 
 		return (
-			<BrowserRouter>
+			
 			    <div className="App">
 			    
 			      <Navbar />
@@ -64,14 +68,16 @@ class App extends Component {
 			      <Route exact path="/routineUpload" component={RoutineUpload} />
 			      <Route exact path="/userUpload" component={UserUpload} />
 			      <Route exact path="/addNotice" component={AddNotice} />
+			      <Route exact path="/notice" component={ViewNotice} />
 			      <Route exact path="/addPreTeacher" component={AddToPreTeacher} />
 			      <Route exact path="/publishassignment" component={PublishAssignment} />
 			      <Route exact path="/viewAssignment" component={ViewAssignment} />
-
+			      <Route exact path="/ViewSubmittedAssignments" component={ViewSubmittedAssignments} />
+			      <Route exact path="/postitems" component={PostItems} />
 			      <Footer />
 
 			    </div>
-			</BrowserRouter>
+			
   		);
 
 	}

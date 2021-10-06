@@ -16,7 +16,7 @@ class Login extends React.Component {
 
 	componentDidMount() {
 		if(this.props.auth.isAuthenticated) {
-			this.props.history.push('/dashboard');
+			this.props.history.push('/notice');
 		}
 	}
 
@@ -39,7 +39,12 @@ class Login extends React.Component {
 				<div className="container">
 				  <div className="row">
 				    <div className="col-md-8 m-auto">
-				      <h1 className="display-4 text-center">Log In</h1>
+				    {
+				    	this.props.codeErr.status !== 'fail' ?
+				    	<h1 className="display-4 text-center">Student Log In</h1> :
+				    	<p className="lead text-center text-danger">Incorrect Credentials</p>
+				    }
+				      
 				      <p className="lead text-center">Sign in to your College account</p>
 				      <form onSubmit={ this.handleSubmit }>
 				        <div className="form-group">
@@ -75,7 +80,7 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	errors: state.codeErr
+	codeErr: state.codeErr
 })
 
 

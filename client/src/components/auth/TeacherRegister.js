@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { registerUser } from './../../actions/authActions';
+import { registerTeacher } from './../../actions/authActions';
 
 
 class TeacherRegister extends React.Component {
@@ -22,7 +22,7 @@ class TeacherRegister extends React.Component {
 
 	componentDidMount() {
 		if(this.props.auth.isAuthenticated) {
-			this.props.history.push('/dashboard');
+			this.props.history.push('/notice');
 		}
 	}
 
@@ -36,7 +36,7 @@ class TeacherRegister extends React.Component {
 		const newUser = {
 			fName, mName, lName, email, password
 		}
-		this.props.registerUser(newUser, this.props.history, 'teacher');
+		this.props.registerTeacher(newUser, this.props.history, 'teacher');
 	}
 
 	render() {
@@ -129,4 +129,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { registerUser })(withRouter(TeacherRegister));
+export default connect(mapStateToProps, { registerTeacher })(withRouter(TeacherRegister));

@@ -16,7 +16,7 @@ class AdminLogin extends React.Component {
 
 	componentDidMount() {
 		if(this.props.auth.isAuthenticated) {
-			this.props.history.push('/dashboard');
+			this.props.history.push('/notice');
 		}
 	}
 
@@ -35,11 +35,17 @@ class AdminLogin extends React.Component {
 
 	render() {
 		return (
-			<div className="login">
+			<div className="login" style={{marginBottom: '100px'}}>
 				<div className="container">
 				  <div className="row">
 				    <div className="col-md-8 m-auto">
-				      <h1 className="display-4 text-center">Log In</h1>
+
+				    {
+				    	this.props.codeErr.status !== 'fail' ?
+				    	<h1 className="display-4 text-center">Admin Log In</h1> :
+				    	<p className="lead text-center text-danger">Incorrect Credentials</p>
+				    }
+
 				      <p className="lead text-center">Admin Login section</p>
 				      <form onSubmit={ this.handleSubmit }>
 				        <div className="form-group">
@@ -75,7 +81,7 @@ class AdminLogin extends React.Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	errors: state.codeErr
+	codeErr: state.codeErr
 })
 
 

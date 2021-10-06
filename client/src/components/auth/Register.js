@@ -22,7 +22,7 @@ class Register extends React.Component {
 
 	componentDidMount() {
 		if(this.props.auth.isAuthenticated) {
-			this.props.history.push('/dashboard');
+			this.props.history.push('/notice');
 		}
 	}
 
@@ -46,11 +46,11 @@ class Register extends React.Component {
 				<div className="container">
 				  <div className="row">
 				    <div className="col-md-8 m-auto">
-				      <h1 className="display-4 text-center">Sign Up</h1>
+				      <h1 className="display-4 text-center">Student Sign Up</h1>
 				      {
 				      	this.props.codeErr.status !== 'error' ?
 				      	<p className="lead text-center">Create your App account.</p> :
-				      	<p className="lead text-center text-danger">please make your email is not fake and havent registered yet.</p>
+				      	<p className="lead text-center text-danger">cannot let you in.</p>
 				      }
 				      
 				      <form onSubmit={ this.handleSubmit }>

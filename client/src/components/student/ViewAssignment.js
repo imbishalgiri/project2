@@ -20,7 +20,7 @@ class ViewAssignment extends React.Component {
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	handleSubmit = (id, event) =>  {
+	handleSubmit = (id, event, index) =>  {
 		
 
 			event.preventDefault();
@@ -28,12 +28,18 @@ class ViewAssignment extends React.Component {
 			console.log(id);
 			console.log(this.props.user.id);
 
+
 			const formData = new FormData(event.target); 
+			let { faculty, semester, shift, teacherName } = this.props.assignmentsFetched.data.assignments[index]._doc;
 	     
 		      // Update the formData object 
 		      formData.append( "file", this.state.myFile ); 
 		      formData.append( "assignment", id); 
 		      formData.append( "student", this.props.user.id ); 
+		      formData.append( "faculty", faculty ); 
+		      formData.append( "semester", semester ); 
+		      formData.append( "shift", shift ); 
+		      formData.append( "teacherName", teacherName ); 
 		      console.log(formData);
 		      this.props.submitAssignment(formData);
 
@@ -44,10 +50,10 @@ class ViewAssignment extends React.Component {
 
 
 	render() {
-
+		console.log(this.props);
 		let allAssignments = this.props.assignmentsFetched.data.assignments;
 		
-		let items = allAssignments.map( ({_doc:{_id, subjectName, teacherName, file, description, status }}) => {
+		let items = allAssignments.map( ({_doc:{_id, subjectName, teacherName, file, description, status }}, index) => {
 			return (
 				<tr key={_id}>
 					<td>{subjectName}</td>
@@ -64,7 +70,7 @@ class ViewAssignment extends React.Component {
 					<td>{teacherName}</td>
 					<td>{status}</td>
 					<td>
-						<form onSubmit={(e) => this.handleSubmit(_id, e)}>
+						<form onSubmit={(e) => this.handleSubmit(_id, e, index)}>
 							<input
               					 type="file"
               					 className="form-control-file" 
@@ -79,7 +85,10 @@ class ViewAssignment extends React.Component {
 		} );
 
 		return (
-			<table className="table table-hover">
+			<div>
+				<h3 className="text-center mb-4">Here are your assignments.</h3>
+				<table className="table table-hover">
+
 			  <thead className="thead-dark">
 				<tr>
 				<th scope="col">subject_name</th>
@@ -96,6 +105,9 @@ class ViewAssignment extends React.Component {
 
 			  </tbody>
 			</table>
+
+			</div>
+			
 		)
 	}
 }

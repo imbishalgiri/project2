@@ -3,7 +3,8 @@ const express = require('express');
 const { 
 		getAllSubmittedAssignments,
 		createSubmittedAssignment,
-		submittedAssignment
+		submittedAssignment,
+		updateSubmittedAssignment
 	} = require('./../controllers/submittedAssignmentController');
 
 const submittedAssignmentRouter = express.Router();
@@ -11,8 +12,12 @@ const submittedAssignmentRouter = express.Router();
 
 submittedAssignmentRouter
 			.route('/')
-			.get(getAllSubmittedAssignments)
+			.get(getAllSubmittedAssignments )
 			.post(submittedAssignment, createSubmittedAssignment);
+
+submittedAssignmentRouter
+			.route('/:id')
+			.patch(updateSubmittedAssignment);
 
 
 module.exports = submittedAssignmentRouter;

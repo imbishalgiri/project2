@@ -66,7 +66,8 @@ exports.getPublishedAssignments = catchAsync(async (req, res) => {
 
 	for(let i = 0; i <assignments.length; i++){
 		newAssignments[i] = Object.assign({}, assignments[i]);
-		const submittedAssignment = await SubmittedAssignment.findOne({assignment: {_id: assignments[i]._id}});
+		const submittedAssignment = await SubmittedAssignment.findOne({student: {_id: student._id}});
+		console.log(submittedAssignment);
 		if(submittedAssignment) {
 			newAssignments[i]._doc.status = submittedAssignment.remarks;
 		}

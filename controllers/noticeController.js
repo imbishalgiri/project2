@@ -22,7 +22,6 @@ exports.getNotice = catchAsync(async (req, res) => {
 
 		res.status(201).json({
 			status: 'success',
-			results: notices.length,
 			data: {
 				notices: allNotices
 			}

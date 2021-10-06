@@ -21,7 +21,7 @@ const studentRouter = express.Router();
 studentRouter
 	.route('/')
 	.get(getAllStudents)
-	.post(signup(Student));
+	.post(signup);
 
 studentRouter
 	.route('/:id')

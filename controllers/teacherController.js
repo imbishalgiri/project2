@@ -1,5 +1,7 @@
+const SubmittedAssignment = require('./../models/submittedAssignmentModel');
 const Teacher = require('./../models/teacherModel');
 const PreTeacher = require('./../models/auth/PreTeacherModel');
+
 const catchAsync = require('./../utils/catchAsync');
 const appErr = require('./../utils/appErrors');
 
@@ -73,3 +75,37 @@ exports.addToPreTeacher = catchAsync(async (req, res) => {
 			}
 		});
 });
+
+
+// viewing the assignments uploaded by the students
+exports.showSubmittedAssignments = catchAsync(async (req, res) => {
+	const { teachername, faculty, semester, shift } = req.params;
+	// console.log(req.body);
+	// const assignment = await SubmittedAssignment.find({$and: [
+	// 	{faculty: facultyName},
+	// 	{semester: sem},
+	// 	{shift: shift},
+	// 	{teacherName: teacherName}
+	// ]});
+	// console.log(teacherName);
+	// console.log(facultyName);
+	// console.log(semester);
+	// console.log(shift);
+
+	const assignment = await SubmittedAssignment.find({
+		faculty: faculty,
+		semester: semester,
+		shift: shift,
+		teacherName: teachername
+	});
+
+	console.log(assignment);
+	res.status(201).json({
+		status: "success",
+		data: {
+			assignment
+		}
+	});
+
+});
+

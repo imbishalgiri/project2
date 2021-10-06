@@ -26,6 +26,19 @@ const submittedAssignmentSchema = new mongoose.Schema({
 	remarks: {
 		type: String,
 		default: 'not graded'
+	}, 
+
+	faculty: {
+		type: String
+	},
+	semester: {
+		type: String
+	}, 
+	shift: {
+		type: String
+	},
+	teacherName: {
+		type: String
 	}
 });
 

@@ -29,6 +29,27 @@ export const registerUser =  (userData, history, role) => async dispatch  => {
 	}
 }
 
+// ACTION FOR SIGNUP
+export const registerTeacher =  (userData, history, role) => async dispatch  => {
+	const mail = {email: userData.email};
+
+	try{
+		await axios.post('api/v1/sendCode/teacher', mail);
+		dispatch({
+			type: CODE_SEND_ERRORS,
+			payload: userData
+		});
+		role === 'student' ? history.push('/confirmCode') : history.push('/confirmTeacherCode');
+		
+	} catch(err) {
+		console.log(err);
+		dispatch({
+			type: CODE_SEND_ERRORS,
+			payload: err.response.data
+		});
+	}
+}
+
 // ACTION FOR VERIFYING 6 DIGIT PIN CODE FOR USER aka STUDENT
 export const verifyUser =  (userData, history, who) => async dispatch  => {
 	console.log(userData);
@@ -41,7 +62,7 @@ export const verifyUser =  (userData, history, who) => async dispatch  => {
 
 		console.log('verified');
 
-		who === 'students' ? history.push('/login'): history.push('/teacherLogin')
+		who === 'students' ? history.push('/login'): history.push('/teacherLogin');
 
 		
 		
@@ -76,7 +97,7 @@ export const loginUser = (userData, user, history) => async dispatch => {
 		 // 5. set current user
 		 dispatch(setCurrentUser(decoded)); 
 
-		 history.push('/dashboard');
+		 history.push('/notice');
 
 	} catch(error) {
 		console.log(error);

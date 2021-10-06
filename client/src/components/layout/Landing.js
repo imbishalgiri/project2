@@ -13,8 +13,8 @@ class Landing extends React.Component {
 			            </h1>
 			            <p className="lead"> let's uplift our interaction technique with each other. </p>
 			            <hr />
-			            <Link to="/register" className="btn btn-lg btn-info mr-2">Sign Up</Link>
-			            <Link to="/login" className="btn btn-lg btn-light">Login</Link>
+			            <Link to="/register" className="btn btn-lg btn-info mr-2">Student Signup</Link>
+			            <Link to="/login" className="btn btn-lg btn-light">Student Login</Link>
 			          </div>
 			        </div>
 			      </div>

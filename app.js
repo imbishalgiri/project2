@@ -14,6 +14,7 @@ const publishedAssignmentRouter = require('./routes/publishedAssignmentRouter');
 const submittedAssignmentRouter = require('./routes/submittedAssignmentRouter');
 const sendCodeRouter = require('./routes/auth/sendCodeRouter');
 const noticeRouter = require('./routes/noticeRouter');
+const postRouter = require('./routes/postRouter');
 // const noticeRouter = require('./routes/noticeRouter');
 // const assignmentRouter = require('./routes/assignmentRouter');
 
@@ -47,6 +48,7 @@ app.use('/api/v1/publishedAssignment', publishedAssignmentRouter);
 app.use('/api/v1/submittedAssignment', submittedAssignmentRouter);
 app.use('/api/v1/sendCode', sendCodeRouter);
 app.use('/api/v1/notice', noticeRouter);
+app.use('/api/v1/posts', postRouter);
 
 app.all('*', (req, res, next) => {
 	const err = new appError(`can't find ${req.originalUrl} route on this server`, 404);

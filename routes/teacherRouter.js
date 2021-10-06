@@ -6,7 +6,8 @@ const {
 	getAllTeachers,
 	getTeacherById,
 	updateTeacherById,
-	addToPreTeacher
+	addToPreTeacher,
+	showSubmittedAssignments
 	
  } = require('./../controllers/teacherController.js');
 
@@ -14,10 +15,15 @@ const {
 	login,
 	protect,
 	restrictTo,
-	signup
+	signup,
+	teacherSignup
 } = require('./../controllers/auth/authController');
 
 const teacherRouter = express.Router();
+
+teacherRouter
+	.route('/showSubmittedAssignments/:faculty/:semester/:shift/:teachername')
+	.get(showSubmittedAssignments);
 
 teacherRouter
 	.route('/add')
@@ -26,16 +32,18 @@ teacherRouter
 teacherRouter
 	.route('/')
 	.get(getAllTeachers)
-	.post(signup(Teacher));
+	.post(teacherSignup);
 
 teacherRouter
 	.route('/:id')
 	.get(getTeacherById)
 	.patch(updateTeacherById);
+           
 
 teacherRouter
 	.route('/login')
-	.post(login(Teacher));
+	.post(login(Teacher));   
+
 
 
 

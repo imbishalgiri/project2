@@ -31,6 +31,7 @@ export const addAssignment =  userData => async dispatch  => {
 	}
 }
 
+// action for student and it is displayed in the student section
 export const getAssignment = userId => async dispatch => {
 
 	try {
@@ -47,7 +48,9 @@ export const getAssignment = userId => async dispatch => {
 		});
 	}
 }
-//  when student submits the assignment
+
+
+//  when student submits the assignment from that upload button
 export const submitAssignment = userData => async dispatch => {
 	try {
 		const assignment = await axios.post('api/v1/submittedAssignment', userData, config);
@@ -59,6 +62,60 @@ export const submitAssignment = userData => async dispatch => {
 		});
 	} catch(err) {
 		console.log("hiii errrrrr")
+		console.log(err);
+		dispatch({
+			type: CODE_SEND_ERRORS,
+			payload: err.response.data
+		});
+	}
+}
+
+
+// Action for teacher to get the assignment that he selects
+/*
+	request object gotta be like this
+
+			{
+		    "teacherName": "giribishal",
+		    "facultyName": "BESE",
+		    "semester": 7,
+		    "shift": "morning"
+			}
+
+*/
+
+export const getSubmittedAssignments = userData => async dispatch => {
+	const {teacherName, facultyName, semester, shift} = userData;
+	try{
+		const submittedAssignment = await axios.get(`api/v1/teachers/showSubmittedAssignments/${facultyName}/${semester}/${shift}/${teacherName}`);
+
+		dispatch({
+			type: FETCH_ALL_DATAS,
+			payload: submittedAssignment.data
+		});
+
+	} catch(err) {
+
+		console.log(err);
+		dispatch({
+			type: CODE_SEND_ERRORS,
+			payload: err.response.data
+		});
+	}
+}
+
+
+//  add remarks to the assignment
+export const addRemark = (userData, id) => async dispatch => {
+	console.log(id);
+	try {
+		const modifiedAssignment = await axios.patch(`api/v1/submittedAssignment/${id}`, userData);
+	    console.log(modifiedAssignment);
+		dispatch({
+			type: CODE_SEND_ERRORS,
+			payload: modifiedAssignment.data
+		});
+	} catch(err) {
 		console.log(err);
 		dispatch({
 			type: CODE_SEND_ERRORS,
