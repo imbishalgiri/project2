@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const compression = require('compression');
 
 const appError = require('./utils/appErrors');
 
@@ -26,6 +27,7 @@ if(process.env.NODE_ENV === 'development'){
 }
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(compression());
 
 // serving static files thru express
 const path = require('path')
