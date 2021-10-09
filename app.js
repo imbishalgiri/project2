@@ -52,6 +52,14 @@ app.use('/api/v1/sendCode', sendCodeRouter);
 app.use('/api/v1/notice', noticeRouter);
 app.use('/api/v1/posts', postRouter);
 
+// serving static assets if in production
+if(process.env.NODE_ENV === 'production') {
+	app.use(express.static('client/build'));
+	app.get('*', (req, res) => {
+		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+	});
+}
+
 app.all('*', (req, res, next) => {
 	const err = new appError(`can't find ${req.originalUrl} route on this server`, 404);
 	next(err);
