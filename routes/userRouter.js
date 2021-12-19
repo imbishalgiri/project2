@@ -4,20 +4,23 @@ const {
 	createUser, 
 } = require('./../controllers/userController');
 
-// const { 
-// 	login,
-// 	protect,
-// 	restrictTo,
-// 	signup
-// } = require('./../controllers/auth/authController');
+const { 
+	login,
+	protect,
+	restrictTo,
+	signup
+} = require('./../controllers/auth/authController');
 
 
-
+/* 
+	@ROUTE prefix
+	'/api/v1/users' 
+*/
 const userRouter = express.Router();
 
 userRouter
 	.route('/')
-	.post(createUser);
+	.post(protect, restrictTo(['admin']), createUser);
 
 // userRouter
 // 	.route('/:id')

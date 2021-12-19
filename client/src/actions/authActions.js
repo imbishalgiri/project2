@@ -5,8 +5,11 @@ import jwt_decode from 'jwt-decode';
 import { 
 	CODE_SEND_ERRORS,
 	VERIFY_CODE_SEND_ERRORS,
-	SET_CURRENT_USER
-	 } from './types';
+	SET_CURRENT_USER,
+	SUCCESS_REGISTRATION,
+	REGISTRATION_ERROR,
+	SET_LOADING_BUTTON
+	} from './types';
 
 // ACTION FOR SIGNUP
 export const registerUser =  (userData, history, role) => async dispatch  => {
@@ -15,7 +18,7 @@ export const registerUser =  (userData, history, role) => async dispatch  => {
 	try{
 		await axios.post('api/v1/sendCode', mail);
 		dispatch({
-			type: CODE_SEND_ERRORS,
+			type: SUCCESS_REGISTRATION,
 			payload: userData
 		});
 		role === 'student' ? history.push('/confirmCode') : history.push('/confirmTeacherCode');
@@ -23,7 +26,7 @@ export const registerUser =  (userData, history, role) => async dispatch  => {
 	} catch(err) {
 		console.log(err);
 		dispatch({
-			type: CODE_SEND_ERRORS,
+			type: REGISTRATION_ERROR,
 			payload: err.response.data
 		});
 	}
@@ -46,6 +49,9 @@ export const registerTeacher =  (userData, history, role) => async dispatch  => 
 		dispatch({
 			type: CODE_SEND_ERRORS,
 			payload: err.response.data
+		},
+		{
+			type: SET_LOADING_BUTTON
 		});
 	}
 }

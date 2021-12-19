@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'; 
+import { Route } from 'react-router-dom'; 
 import jwt_decode from 'jwt-decode';
 import store from './store';
 

@@ -12,7 +12,7 @@ const submittedAssignmentRouter = express.Router();
 
 submittedAssignmentRouter
 			.route('/')
-			.get(getAllSubmittedAssignments )
+			.get(getAllSubmittedAssignments)
 			.post(submittedAssignment, createSubmittedAssignment);
 
 submittedAssignmentRouter

@@ -5,13 +5,14 @@ const Student = require('./../../models/studentModel');
 const PreTeacher = require('./../../models/auth/PreTeacherModel');
 const User = require('./../../models/userModel');
 const Teacher = require('./../../models/teacherModel');
+const Admin = require('./../../models/adminModel');
 const CodeSender = require('./../../models/auth/codeSenderModel');
 const catchAsync = require('./../../utils/catchAsync');
 const getRandCode = require('./../../utils/getRandCode');
 const mailSender = require('./../../utils/email');
 
-const signToken = (id, firstName, lastName, role) => {
-	return jwt.sign({ id, firstName, lastName, role }, process.env.JWT_SECRET_KEY, {
+const signToken = (...args) => {
+	return jwt.sign({ id: args[0], firstName: args[1], lastName: args[2], role: args[3] || null }, process.env.JWT_SECRET_KEY, {
 			expiresIn: process.env.JWT_EXPIRY
 		});
 }
@@ -101,7 +102,7 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 	// for student get it from Users for teacher Get it from PreTeacher
 	console.log(req.body);
 	const preTeacher = await PreTeacher.findOne({email: req.body.email});
-	if(!PreTeacher) {
+	if(!preTeacher) {
 		return next(new AppErr('you do not have access ', 401));
 	}
 
@@ -125,6 +126,7 @@ exports.teacherSignup = catchAsync(async (req, res, next) => {
 	);
 	console.log('user data');
 	console.log(userData);
+	userData.user = preTeacher._id;
 	const newUser = await Teacher.create(userData);
 
 	const token = signToken(newUser._id, newUser.firstName, newUser.lastName, newUser.role);
@@ -208,13 +210,18 @@ exports.login = (User) => {
 			return next(new AppErr('incorrect credentials', 401));
 		}
 
-		if(user.user) {
-			console.log(user.user);
+		// 3. Sending token to the user
+		if(user.role === 'admin' || 'teacher') {
+			const token = signToken(user._id, user.firstName, user.lastName, user.role);
+			res.status(200).json({
+				status: 'success',
+				token
+			});
 		}
+		console.log(user)
 
-		// 3. if all the conditions goes fine send token to the client
-		const token = signToken(user._id, user.firstName, user.lastName, user.role);
-
+		// 4. if all the conditions goes fine send token to the client
+		const token = signToken(user._id, user.firstName, user.lastName, user.user.role);
 		res.status(200).json({
 			status: 'success',
 			token
@@ -224,9 +231,7 @@ exports.login = (User) => {
 }
 		
 
-exports.protect = (User) => {
-
-	return catchAsync( async (req, res, next) => {
+exports.protect = catchAsync( async (req, res, next) => {
 		// 1. getting the token and check whether it is there or not
 		let token;
 		if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
@@ -239,23 +244,30 @@ exports.protect = (User) => {
 		// 2. verify the token
 		const decodedToken = await promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY);
 
+		// console.log(decodedToken);
+
 		// 3. check if user still exist
+		const Users = {
+			'teacher': Teacher,
+			'student': Student
+		}
+		const User = Users[decodedToken.role] || Admin;
 		const currentUser = await User.findById(decodedToken.id);
 		if(!currentUser){
 			return next(new AppErr('sorry user does not exist', 401));
 		}
-
+		// console.log(currentUser);
 		// 4. check if user changed password after jwt is issued
+		currentUser.user.role = currentUser.user.role || 'admin'
 		req.user = currentUser;
-		console.log(req.user);
 		next();
 	});
-}
+
 
 
 exports.restrictTo = (arr) => {
 	return (req, res, next) => {
-		if(!arr.includes(req.user.role)) {
+		if(!arr.includes(req.user.user.role)) {
 			return next( new AppErr('You do not have permission to do this activity', 403));
 		}
 		next();

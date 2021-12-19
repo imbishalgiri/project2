@@ -12,6 +12,11 @@ const {
 
 const adminRouter = express.Router();
 
+
+/*
+@ROUTE: /api/v1/admins
+*/ 
+
 adminRouter
 	.route('/')
 	.post(createAdmin);

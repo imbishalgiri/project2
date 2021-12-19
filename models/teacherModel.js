@@ -44,8 +44,20 @@ const teacherSchema = new mongoose.Schema({
 	role: {
 		type: String,
 		default: "teacher"
-	}
+	},
 
+	user: {
+		type: mongoose.Schema.ObjectId, 
+		ref: 'PreTeacher' 
+}
+
+});
+
+teacherSchema.pre(/^find/, function(next) {
+	this.populate({
+		path: "user"
+	});
+	next();
 });
 
 teacherSchema.pre('save', async function(next){

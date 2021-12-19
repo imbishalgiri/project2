@@ -2,7 +2,8 @@ import axios from 'axios';
 import { 
 	CODE_SEND_ERRORS,
 	FETCH_ALL_DATAS,
-	GET_NOTICE
+	GET_NOTICE,
+	SET_LOADING_BUTTON
 
 } from './types';
 
@@ -42,4 +43,13 @@ export const showNotice =  userData => async dispatch  => {
 			payload: err.response.data
 		});
 	}
+}
+
+// set loading to be true
+export const setLoading =  userData => async dispatch  => {
+
+		dispatch({
+			type: SET_LOADING_BUTTON
+		});
+ 
 }

@@ -21,6 +21,10 @@ const {
 
 const teacherRouter = express.Router();
 
+/*
+	@ROUTE: api/v1/teachers
+*/ 
+
 teacherRouter
 	.route('/showSubmittedAssignments/:faculty/:semester/:shift/:teachername')
 	.get(showSubmittedAssignments);

@@ -36,9 +36,9 @@ exports.getAllStudents = catchAsync(async (req, res) => {
 // Getting student when ID is provided
 exports.getStudentById = catchAsync(async (req, res, next) => {
 		const student = await Student.findById(req.params.id);
-
+		console.log(student);
 		if(!student) {
-			return next(new appErr('cannot find student for this ID', 404));
+			return next(new appErr('sorry the student does not exist', 404));
 		}
 
 		res.status(201).json({

@@ -1,12 +1,14 @@
 import React from 'react'
-import { showNotice } from './../../actions/commonActions';
+import { setLoading, showNotice } from './../../actions/commonActions';
 import { connect } from 'react-redux';
+
 
 
 class ViewNotice extends React.Component {
 
 	componentDidMount() {
 		this.props.showNotice();
+		this.props.setLoading();
 	}
 
 
@@ -28,4 +30,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {showNotice})(ViewNotice);
+export default connect(mapStateToProps, { showNotice, setLoading })(ViewNotice);

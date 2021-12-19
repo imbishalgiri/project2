@@ -17,15 +17,21 @@ const {
 
 
 const studentRouter = express.Router();
+/*
+
+@ROUTE: ------->  api/v1/students
+append to this route
+
+*/ 
 
 studentRouter
 	.route('/')
-	.get(getAllStudents)
+	.get(protect, getAllStudents)
 	.post(signup);
 
 studentRouter
 	.route('/:id')
-	.get(protect(Student), restrictTo(['student', 'admin']), getStudentById)
+	.get(protect , restrictTo(['student', 'admin']), getStudentById)
 	.patch(updateStudentById);
 
 

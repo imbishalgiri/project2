@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { loginUser } from './../../actions/authActions';
+import { setLoading } from '../../actions/commonActions';
+import CustomButton from '../utils/CustomButton';
 
 class Login extends React.Component {
 	constructor(props){
@@ -31,6 +33,8 @@ class Login extends React.Component {
 			email, password
 		}
 		this.props.loginUser(newUser, 'students', this.props.history);
+		this.props.setLoading();
+
 	}
 
 	render() {
@@ -65,10 +69,14 @@ class Login extends React.Component {
 				          	onChange={ this.handleChange }
 				          />
 				        </div>
-				        <input 
-				          type="submit" 
-				          className="btn btn-info btn-block mt-4" 
-				        />
+						<CustomButton
+							text="login now"
+							loadingText="logging in"
+							isLoading={ this.props.isLoading }
+						/>
+						
+				        
+						
 				      </form>
 				    </div>
 				  </div>
@@ -80,8 +88,9 @@ class Login extends React.Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	codeErr: state.codeErr
+	codeErr: state.codeErr,
+	isLoading: state.loading.buttonLoading
 })
 
 
-export default connect(mapStateToProps, { loginUser })(withRouter(Login));
+export default connect(mapStateToProps, { loginUser, setLoading })(withRouter(Login));
