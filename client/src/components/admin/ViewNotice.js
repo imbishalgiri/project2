@@ -1,5 +1,5 @@
 import React from 'react'
-import { setLoading, showNotice } from './../../actions/commonActions';
+import { unsetLoading, showNotice } from './../../actions/commonActions';
 import { connect } from 'react-redux';
 
 
@@ -8,7 +8,7 @@ class ViewNotice extends React.Component {
 
 	componentDidMount() {
 		this.props.showNotice();
-		this.props.setLoading();
+		this.props.unsetLoading();
 	}
 
 
@@ -30,4 +30,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { showNotice, setLoading })(ViewNotice);
+export default connect(mapStateToProps, { showNotice, unsetLoading })(ViewNotice);

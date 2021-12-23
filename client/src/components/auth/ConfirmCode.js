@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import CustomButton from '../utils/CustomButton';
+import { setLoading, unsetLoading} from '../../actions/commonActions';
 import { verifyUser } from './../../actions/authActions';
 
 class ConfirmCode extends React.Component {
@@ -18,6 +19,11 @@ class ConfirmCode extends React.Component {
 		if(this.props.auth.isAuthenticated) {
 			this.props.history.push('/notice');
 		}
+		this.props.unsetLoading();
+	}
+
+	componentDidUpdate() {
+		if(this.props.codeErr.status) this.props.unsetLoading();
 	}
 
 	handleChange = (event) => {
@@ -26,7 +32,7 @@ class ConfirmCode extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		const { fName,mName, lName, email, password } = this.props.codeErr;
+		const { fName,mName, lName, email, password } = this.props.student;
 		const newUser = {
 			firstName: fName, 
 			middleName: mName, 
@@ -36,7 +42,11 @@ class ConfirmCode extends React.Component {
 			verificationCode: this.state.vCode
 		}
 		this.props.verifyUser(newUser, this.props.history, 'students');
+		this.props.setLoading();
+		this.props.codeErr.status = "";
 	}
+
+
 
 	render() {
 		return (
@@ -45,7 +55,11 @@ class ConfirmCode extends React.Component {
 				  <div className="row">
 				    <div className="col-md-8 m-auto">
 				      <h1 className="display-4 text-center">Verification</h1>
+					  { 
+					  		this.props.codeErr.status? <p className="lead text-center 				text-danger">Code did not match.</p>: null 
+					   }
 				      <p className="lead text-center">Enter 6 digit code that we sent to your entered gmail.</p>
+					  
 				      <form onSubmit={ this.handleSubmit }>
 				        <div className="form-group">
 				          <input
@@ -58,7 +72,11 @@ class ConfirmCode extends React.Component {
 				          	 required 
 				           />
 				        </div>
-				        <input type="submit" className="btn btn-info btn-block mt-4" />
+				        <CustomButton
+							text="Verify"
+							loadingText="Verifying"
+							isLoading={ this.props.isLoading }
+						/>
 				      </form>
 				    </div>
 				  </div>
@@ -70,7 +88,9 @@ class ConfirmCode extends React.Component {
 
 const mapStateToProps = state => ({
 	auth: state.auth,
-	codeErr: state.codeErr
+	codeErr: state.vCodeErr,
+	student: state.auth.message,
+	isLoading: state.loading.buttonLoading
 });
 
-export default connect(mapStateToProps, { verifyUser })(withRouter(ConfirmCode));
+export default connect(mapStateToProps, { verifyUser, setLoading, unsetLoading })(withRouter(ConfirmCode));

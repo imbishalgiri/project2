@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { loginUser } from './../../actions/authActions';
-import { setLoading } from '../../actions/commonActions';
+import { setLoading, unsetLoading} from '../../actions/commonActions';
 import CustomButton from '../utils/CustomButton';
 
 class Login extends React.Component {
@@ -20,6 +20,13 @@ class Login extends React.Component {
 		if(this.props.auth.isAuthenticated) {
 			this.props.history.push('/notice');
 		}
+		this.props.unsetLoading();
+	}
+
+	componentDidUpdate() {
+		if(this.props.codeErr.status === "fail") {
+			this.props.unsetLoading();
+		}
 	}
 
 	handleChange = (event) => {
@@ -34,6 +41,8 @@ class Login extends React.Component {
 		}
 		this.props.loginUser(newUser, 'students', this.props.history);
 		this.props.setLoading();
+		this.props.codeErr.status = "";
+		this.props.isJustSignedUp.signup = false;
 
 	}
 
@@ -48,6 +57,10 @@ class Login extends React.Component {
 				    	<h1 className="display-4 text-center">Student Log In</h1> :
 				    	<p className="lead text-center text-danger">Incorrect Credentials</p>
 				    }
+
+					{
+						this.props.isJustSignedUp.signup ? <p className="lead text-center text-success">Success Registering, Please LOGIN.</p>: null 
+					}
 				      
 				      <p className="lead text-center">Sign in to your College account</p>
 				      <form onSubmit={ this.handleSubmit }>
@@ -74,9 +87,6 @@ class Login extends React.Component {
 							loadingText="logging in"
 							isLoading={ this.props.isLoading }
 						/>
-						
-				        
-						
 				      </form>
 				    </div>
 				  </div>
@@ -89,8 +99,9 @@ class Login extends React.Component {
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 	codeErr: state.codeErr,
-	isLoading: state.loading.buttonLoading
+	isLoading: state.loading.buttonLoading,
+	isJustSignedUp: state.codeErr
 })
 
 
-export default connect(mapStateToProps, { loginUser, setLoading })(withRouter(Login));
+export default connect(mapStateToProps, { loginUser, setLoading, unsetLoading })(withRouter(Login));

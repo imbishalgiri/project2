@@ -21,7 +21,15 @@ exports.sendCode =  async (req, res, next) => {
 	const verCode = getRandCode();
 
 	if(!(await User.findOne({email: req.body.email}) )) {
-		return next(new AppErr('sorry you are not eligible'), 400);
+		return next(new AppErr('Sorry you can not have access.'), 400);
+	}
+
+	if( await Student.findOne({ email: req.body.email }) ) {
+		return next(new AppErr('You are already Student.'), 400); 
+	}
+
+	if( await Teacher.findOne({ email: req.body.email }) ) {
+		return next(new AppErr('You are already Teacher.'));
 	}
 
 	try{

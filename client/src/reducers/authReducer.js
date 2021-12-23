@@ -28,7 +28,7 @@ const authReducer = (state = initialState, action) => {
 		case SUCCESS_REGISTRATION:
 			return {
 				...state,
-				message: "registration successful, please login"
+				message: action.payload
 
 			}
 		

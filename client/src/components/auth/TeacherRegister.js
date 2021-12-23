@@ -2,6 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import CustomButton from '../utils/CustomButton';
+import { setLoading, unsetLoading} from '../../actions/commonActions';
+
 import { registerTeacher } from './../../actions/authActions';
 
 
@@ -26,6 +29,13 @@ class TeacherRegister extends React.Component {
 		}
 	}
 
+	componentDidUpdate() {
+		if(this.props.codeErr.status === 'error' || this.props.auth.message !== "") {
+			this.props.unsetLoading();
+
+		}
+	}
+
 	handleChange = (event) => {
 		this.setState({[event.target.name]: event.target.value});
 	}
@@ -37,10 +47,14 @@ class TeacherRegister extends React.Component {
 			fName, mName, lName, email, password
 		}
 		this.props.registerTeacher(newUser, this.props.history, 'teacher');
+		this.props.setLoading();
+		this.props.codeErr.status = "";
+		this.props.auth.message = "";
 	}
 
 	render() {
 		const pwdClass = this.state.password.length > 7 ? '': 'is-invalid';
+		const authMessage = this.props.auth.message.message;
 		return (
 			<div className="register">
 				<div className="container">
@@ -51,7 +65,12 @@ class TeacherRegister extends React.Component {
 				      	this.props.codeErr.status !== 'error' ?
 				      	<p className="lead text-center">Create your App account.</p> :
 				      	<p className="lead text-center text-danger">please make your email is not fake and havent registered yet.</p>
+						  
 				      }
+
+					  {
+						  authMessage? <p className="lead text-center text-danger">{authMessage}</p> : null 
+					  }
 				      
 				      <form onSubmit={ this.handleSubmit }>
 
@@ -113,7 +132,11 @@ class TeacherRegister extends React.Component {
 				           />
 				        </div>
 				      
-				        <input type="submit" className="btn btn-info btn-block mt-4" />
+				        <CustomButton
+							text="Register Now"
+							loadingText="Sending Verification Code"
+							isLoading={ this.props.isLoading }
+						/>
 				      </form>
 				    </div>
 				  </div>
@@ -125,8 +148,9 @@ class TeacherRegister extends React.Component {
 
 const mapStateToProps = state => ({
 	auth: state.auth,
-	codeErr: state.codeErr
+	codeErr: state.codeErr,
+	isLoading: state.loading.buttonLoading
 });
 
 
-export default connect(mapStateToProps, { registerTeacher })(withRouter(TeacherRegister));
+export default connect(mapStateToProps, { registerTeacher, setLoading, unsetLoading })(withRouter(TeacherRegister));

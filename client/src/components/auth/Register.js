@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import CustomButton from '../utils/CustomButton';
+import { setLoading, unsetLoading} from '../../actions/commonActions';
 import { registerUser } from './../../actions/authActions';
 
 
@@ -15,7 +17,9 @@ class Register extends React.Component {
 			lName: '',
 			email: '',
 			password: '',
-			errors: {}
+			errors: {
+				
+			}
 		}
 
 	}
@@ -23,6 +27,14 @@ class Register extends React.Component {
 	componentDidMount() {
 		if(this.props.auth.isAuthenticated) {
 			this.props.history.push('/notice');
+		}
+		this.props.unsetLoading();
+	}
+
+	componentDidUpdate() {
+		if(this.props.codeErr.status === 'error' || this.props.auth.message !== "") {
+			this.props.unsetLoading();
+
 		}
 	}
 
@@ -37,6 +49,9 @@ class Register extends React.Component {
 			fName, mName, lName, email, password
 		}
 		this.props.registerUser(newUser, this.props.history, 'student');
+		this.props.setLoading();
+		this.props.codeErr.status = "";
+		this.props.auth.message = "";
 	}
 
 	render() {
@@ -52,6 +67,12 @@ class Register extends React.Component {
 				      	<p className="lead text-center">Create your App account.</p> :
 				      	<p className="lead text-center text-danger">cannot let you in.</p>
 				      }
+					  {
+						  this.props.auth.message ? 
+						  <p className="lead text-center text-danger">{this.props.auth.message.message}</p> :
+						  null
+
+					  }
 				      
 				      <form onSubmit={ this.handleSubmit }>
 
@@ -113,7 +134,11 @@ class Register extends React.Component {
 				           />
 				        </div>
 				      
-				        <input type="submit" className="btn btn-info btn-block mt-4" />
+				        <CustomButton
+							text="Register Now"
+							loadingText="Sending Verification Code"
+							isLoading={ this.props.isLoading }
+						/>
 				      </form>
 				    </div>
 				  </div>
@@ -125,8 +150,9 @@ class Register extends React.Component {
 
 const mapStateToProps = state => ({
 	auth: state.auth,
-	codeErr: state.codeErr
+	codeErr: state.codeErr,
+	isLoading: state.loading.buttonLoading
 });
 
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default connect(mapStateToProps, { registerUser, setLoading, unsetLoading })(withRouter(Register));

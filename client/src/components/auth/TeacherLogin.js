@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { loginUser } from './../../actions/authActions';
+import { setLoading, unsetLoading} from '../../actions/commonActions';
+import CustomButton from '../utils/CustomButton';
 
 class TeacherLogin extends React.Component {
 	constructor(props){
@@ -18,6 +20,13 @@ class TeacherLogin extends React.Component {
 		if(this.props.auth.isAuthenticated) {
 			this.props.history.push('/notice');
 		}
+		this.props.unsetLoading();
+	}
+
+	componentDidUpdate() {
+		if(this.props.codeErr.status === "fail") {
+			this.props.unsetLoading();
+		}
 	}
 
 	handleChange = (event) => {
@@ -31,6 +40,9 @@ class TeacherLogin extends React.Component {
 			email, password
 		}
 		this.props.loginUser(newUser, 'teachers', this.props.history);
+		this.props.setLoading();
+		this.props.codeErr.status = "";
+		this.props.isJustSignedUp.signup = false;
 	}
 
 	render() {
@@ -44,6 +56,9 @@ class TeacherLogin extends React.Component {
 				    	<h1 className="display-4 text-center">Teacher Log In</h1> :
 				    	<p className="lead text-center text-danger">Incorrect Credentials</p>
 				    }
+					{
+						this.props.codeErr.signup ?<p className="lead text-center text-success">Just Registered, Please </p>: null 
+					}
 				      <p className="lead text-center">Sign in to your College account</p>
 				      <form onSubmit={ this.handleSubmit }>
 				        <div className="form-group">
@@ -64,10 +79,11 @@ class TeacherLogin extends React.Component {
 				          	onChange={ this.handleChange }
 				          />
 				        </div>
-				        <input 
-				          type="submit" 
-				          className="btn btn-info btn-block mt-4" 
-				        />
+				        <CustomButton
+							text="login now"
+							loadingText="logging in"
+							isLoading={ this.props.isLoading }
+						/>
 				      </form>
 				    </div>
 				  </div>
@@ -79,8 +95,10 @@ class TeacherLogin extends React.Component {
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
-	codeErr: state.codeErr
+	codeErr: state.codeErr,
+	isLoading: state.loading.buttonLoading,
+	isJustSignedUp: state.codeErr
 })
 
 
-export default connect(mapStateToProps, { loginUser })(withRouter(TeacherLogin));
+export default connect(mapStateToProps, { loginUser, setLoading, unsetLoading })(withRouter(TeacherLogin));

@@ -3,7 +3,8 @@ import {
 	CODE_SEND_ERRORS,
 	FETCH_ALL_DATAS,
 	GET_NOTICE,
-	SET_LOADING_BUTTON
+	SET_LOADING_BUTTON,
+	UNSET_LOADING_BUTTON
 
 } from './types';
 
@@ -28,7 +29,7 @@ export const addNotice =  (userData, history) => async dispatch  => {
 }
 
 // action for fetching the notice data
-export const showNotice =  userData => async dispatch  => {
+export const showNotice = () => async dispatch  => {
 	try {
 		 const notice = await axios.get('api/v1/notice');
 	    console.log(notice.data);
@@ -46,10 +47,17 @@ export const showNotice =  userData => async dispatch  => {
 }
 
 // set loading to be true
-export const setLoading =  userData => async dispatch  => {
+export const setLoading =  () =>  dispatch  => {
 
 		dispatch({
 			type: SET_LOADING_BUTTON
 		});
  
+}
+
+// unset loading state to false
+export const unsetLoading = () => dispatch => {
+	dispatch({
+		type: UNSET_LOADING_BUTTON
+	})
 }

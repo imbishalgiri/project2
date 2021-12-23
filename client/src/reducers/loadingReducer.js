@@ -1,4 +1,4 @@
-import { SET_LOADING_BUTTON } from './../actions/types';
+import { SET_LOADING_BUTTON, UNSET_LOADING_BUTTON } from './../actions/types';
 
 
 const initialState = {
@@ -11,8 +11,14 @@ const loadingReducer = (state = initialState, action) => {
 		case SET_LOADING_BUTTON: 
 			return {
                 ...state,
-                buttonLoading: !state.buttonLoading
+                buttonLoading: true
             }
+			 
+		case UNSET_LOADING_BUTTON:
+			return {
+				...state,
+				buttonLoading: false
+			}
 
 		default:
 			return state;

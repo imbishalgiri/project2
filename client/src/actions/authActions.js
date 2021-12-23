@@ -39,7 +39,7 @@ export const registerTeacher =  (userData, history, role) => async dispatch  => 
 	try{
 		await axios.post('api/v1/sendCode/teacher', mail);
 		dispatch({
-			type: CODE_SEND_ERRORS,
+			type: SUCCESS_REGISTRATION,
 			payload: userData
 		});
 		role === 'student' ? history.push('/confirmCode') : history.push('/confirmTeacherCode');
@@ -47,11 +47,8 @@ export const registerTeacher =  (userData, history, role) => async dispatch  => 
 	} catch(err) {
 		console.log(err);
 		dispatch({
-			type: CODE_SEND_ERRORS,
+			type: REGISTRATION_ERROR,
 			payload: err.response.data
-		},
-		{
-			type: SET_LOADING_BUTTON
 		});
 	}
 }
