@@ -1,33 +1,28 @@
-import React from 'react'
+import React from 'react';
 import { unsetLoading, showNotice } from './../../actions/commonActions';
 import { connect } from 'react-redux';
 
-
-
 class ViewNotice extends React.Component {
+  componentDidMount() {
+    this.props.showNotice();
+    this.props.unsetLoading();
+  }
 
-	componentDidMount() {
-		this.props.showNotice();
-		this.props.unsetLoading();
-	}
-
-
-	render() {
-		// const {title, description} = this.props.notice.data.notices[0];
-		return (
-			<div className="jumbotron">
-				<h1 className="display-4">{this.props.notice.data.notices[0].title}</h1>
-				<p className="lead">{this.props.notice.data.notices[0].description}</p>
-				<hr className="my-4" />
-				<p>Nepal College of Information Technology. Balkumari, Lalitpur.</p>
-			</div>
-		);
-	}
+  render() {
+    // const {title, description} = this.props.notice.data.notices[0];
+    return (
+      <div className="jumbotron">
+        <h1 className="display-4">{this.props.notice.data.notices[0].title}</h1>
+        <p className="lead">{this.props.notice.data.notices[0].description}</p>
+        <hr className="my-4" />
+        <p>Nepal College of Information Technology. Balkumari, Lalitpur.</p>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-	notice: state.notice
-})
-
+const mapStateToProps = (state) => ({
+  notice: state.notice
+});
 
 export default connect(mapStateToProps, { showNotice, unsetLoading })(ViewNotice);

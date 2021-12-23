@@ -22,17 +22,16 @@ const postRouter = require('./routes/postRouter');
 
 const app = express();
 
-
-if(process.env.NODE_ENV === 'development'){
-	app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
 }
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression());
 
 // serving static files thru express
-const path = require('path')
-app.use('/static', express.static(path.join(__dirname, 'public')))
+const path = require('path');
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 /*
 	@ROUTES Handler
@@ -52,25 +51,24 @@ app.use('/api/v1/notice', noticeRouter);
 app.use('/api/v1/posts', postRouter);
 
 // serving static assets if in production
-if(process.env.NODE_ENV === 'production') {
-	app.use(express.static('client/build'));
-	app.get('*', (req, res) => {
-		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-	});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
 
 app.all('*', (req, res, next) => {
-	const err = new appError(`can't find ${req.originalUrl} route on this server`, 404);
-	next(err);
+  const err = new appError(`can't find ${req.originalUrl} route on this server`, 404);
+  next(err);
 });
 
 /*
 	@ERROR MIDDLEWARE
 	this middleware(error first) tells the express
 	that this is an error middleware
-*/ 
+*/
 
 app.use(globalErrorHandler);
 
 module.exports = app;
-

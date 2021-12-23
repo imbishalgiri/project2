@@ -10,16 +10,15 @@ class PostForm extends Component {
     };
   }
 
-
-handleSubmit = (event) => {
-  event.preventDefault();
-  const name = `${this.props.user.firstName} ${this.props.user.lastName}`;
-  this.props.addPost({name, text: this.state.description});
-}
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const name = `${this.props.user.firstName} ${this.props.user.lastName}`;
+    this.props.addPost({ name, text: this.state.description });
+  };
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   render() {
     console.log(this.props.user);
@@ -30,13 +29,13 @@ handleSubmit = (event) => {
           <div className="card-body">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
-                <textarea 
-                      className="form-control form-control-lg col-md-8" 
-                      placeholder="write anything that's on your mind" 
-                      name="description" 
-                      onChange={ this.handleChange }
-                      rows={4}
-                  />
+                <textarea
+                  className="form-control form-control-lg col-md-8"
+                  placeholder="write anything that's on your mind"
+                  name="description"
+                  onChange={this.handleChange}
+                  rows={4}
+                />
               </div>
               <button type="submit" className="btn btn-dark">
                 Submit
@@ -49,10 +48,8 @@ handleSubmit = (event) => {
   }
 }
 
-
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.auth.user
 });
 
 export default connect(mapStateToProps, { addPost })(PostForm);
-

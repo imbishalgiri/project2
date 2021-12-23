@@ -3,7 +3,7 @@ const Notice = require('./../models/noticeModel');
 
 const { createNotice, getNotice } = require('./../controllers/noticeController');
 
-// const { 
+// const {
 // 	login,
 // 	protect,
 // 	restrictTo,
@@ -12,12 +12,6 @@ const { createNotice, getNotice } = require('./../controllers/noticeController')
 
 const noticeRouter = express.Router();
 
-noticeRouter
-	.route('/')
-	.get(getNotice)
-	.post(createNotice);
-
-
-
+noticeRouter.route('/').get(getNotice).post(createNotice);
 
 module.exports = noticeRouter;
