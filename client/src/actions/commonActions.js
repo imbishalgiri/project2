@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {
   CODE_SEND_ERRORS,
-  FETCH_ALL_DATAS,
   GET_NOTICE,
+  SET_FULLPAGE_LOADING,
+  UNSET_FULLPAGE_LOADING,
   SET_LOADING_BUTTON,
   UNSET_LOADING_BUTTON
 } from './types';
@@ -54,5 +55,17 @@ export const setLoading = () => (dispatch) => {
 export const unsetLoading = () => (dispatch) => {
   dispatch({
     type: UNSET_LOADING_BUTTON
+  });
+};
+
+export const setFullpageLoading = () => (dispatch) => {
+  dispatch({
+    type: SET_FULLPAGE_LOADING
+  });
+};
+
+export const unsetFullpageLoading = () => (dispatch) => {
+  dispatch({
+    type: UNSET_FULLPAGE_LOADING
   });
 };

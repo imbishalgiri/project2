@@ -1,0 +1,81 @@
+::before {
+  position: absolute;
+  content: '';
+  background: #fff;
+}
+
+/* reflection of the animation in the bottom */
+.wrapper {
+  position: absolute;
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  top: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  left: 0;
+}
+
+.wrapper::before {
+  width: 100%;
+  height: 10px;
+  bottom: -10px;
+  background: rgb(240, 240, 240);
+  border-radius: 100%;
+  filter: blur(7px);
+}
+
+/* main loading circle  */
+.loading {
+  width: 300px;
+  height: 300px;
+  border-radius: 999px;
+  transform: rotate(-45deg);
+  animation: animated-curve 2s ease-in-out infinite;
+  margin-top: -200px;
+}
+
+/*  neon-semicircle */
+.loading::before {
+  bottom: 0;
+  background: #fff;
+  width: 100%;
+  height: 50%;
+  border-radius: 0 0 999px 999px;
+  border-bottom: 12px solid #000;
+}
+
+/* inner-cirle with the ball */
+.inner_circle {
+  position: absolute;
+  inset: 20px;
+  background: var(--background-color);
+  border-radius: 999px;
+  animation: animated-ball 2s ease-in-out infinite;
+}
+
+/* style for the ball */
+.inner_circle::before {
+  inset: 2px;
+  top: 45%;
+  background: #87ceeb;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+}
+
+/* rotating the ball from initial point to -180deg */
+@keyframes animated-ball {
+  50% {
+    transform: rotate(-180deg);
+  }
+}
+
+/* rotating the circle from initial point (-45deg) to 45deg */
+@keyframes animated-curve {
+  50% {
+    transform: rotate(45deg);
+  }
+}

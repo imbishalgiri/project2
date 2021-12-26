@@ -1,5 +1,7 @@
 import React from 'react';
+import Loader from '../loader/Loader';
 import { getAssignment, submitAssignment } from './../../actions/teacherActions';
+import { setFullpageLoading } from '../../actions/commonActions';
 import { connect } from 'react-redux';
 
 class ViewAssignment extends React.Component {
@@ -12,6 +14,7 @@ class ViewAssignment extends React.Component {
 
   componentDidMount() {
     this.props.getAssignment(this.props.user.id);
+    this.props.setFullpageLoading();
   }
 
   handleChange = (event) => {
@@ -41,7 +44,7 @@ class ViewAssignment extends React.Component {
   };
 
   render() {
-    console.log(this.props);
+    console.log(this.props.loading);
     let allAssignments = this.props.assignmentsFetched.data.assignments;
 
     let items = allAssignments.map(
@@ -54,8 +57,7 @@ class ViewAssignment extends React.Component {
                 href={`http://localhost:8000/static/assignments/published/${file}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                download={`${file}`}
-              >
+                download={`${file}`}>
                 {file}
               </a>
             </td>
@@ -92,7 +94,7 @@ class ViewAssignment extends React.Component {
               <th scope="col">submit_here</th>
             </tr>
           </thead>
-          <tbody>{items}</tbody>
+          {this.props.loading.fullpageLoading ? <Loader /> : <tbody>{items}</tbody>}
         </table>
       </div>
     );
@@ -101,7 +103,10 @@ class ViewAssignment extends React.Component {
 
 const mapStateToProps = (state) => ({
   assignmentsFetched: state.datasFetched,
-  user: state.auth.user
+  user: state.auth.user,
+  loading: state.loading
 });
 
-export default connect(mapStateToProps, { getAssignment, submitAssignment })(ViewAssignment);
+export default connect(mapStateToProps, { getAssignment, submitAssignment, setFullpageLoading })(
+  ViewAssignment
+);

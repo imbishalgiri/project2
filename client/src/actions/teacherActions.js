@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CODE_SEND_ERRORS, FETCH_ALL_DATAS } from './types';
+import { CODE_SEND_ERRORS, FETCH_ALL_DATAS, UNSET_FULLPAGE_LOADING } from './types';
 
 let config = {
   headers: {
@@ -32,6 +32,10 @@ export const getAssignment = (userId) => async (dispatch) => {
     dispatch({
       type: FETCH_ALL_DATAS,
       payload: assignments.data
+    });
+
+    dispatch({
+      type: UNSET_FULLPAGE_LOADING
     });
   } catch (err) {
     console.log(err);
@@ -85,6 +89,10 @@ export const getSubmittedAssignments = (userData) => async (dispatch) => {
     dispatch({
       type: FETCH_ALL_DATAS,
       payload: submittedAssignment.data
+    });
+
+    dispatch({
+      type: UNSET_FULLPAGE_LOADING
     });
   } catch (err) {
     console.log(err);

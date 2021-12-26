@@ -1,6 +1,8 @@
 import React from 'react';
 import SubmittedAssignmentsTable from '../utils/SubmittedAssignmentsTable';
+import Loader from '../loader/Loader';
 import { getSubmittedAssignments, addRemark } from './../../actions/teacherActions';
+import { setFullpageLoading } from '../../actions/commonActions';
 import { connect } from 'react-redux';
 
 class ViewSubmittedAssignment extends React.Component {
@@ -26,10 +28,12 @@ class ViewSubmittedAssignment extends React.Component {
       semester: sem,
       shift: shift
     };
+    this.props.setFullpageLoading();
     this.props.getSubmittedAssignments(dataToSubmit);
   };
 
   render() {
+    const loading = this.props.loading.fullpageLoading;
     return (
       <div className="register">
         <div className="container">
@@ -102,8 +106,7 @@ class ViewSubmittedAssignment extends React.Component {
           </div>
           <br />
           <br />
-          {/* {table} */}
-          <SubmittedAssignmentsTable />
+          {loading ? <Loader /> : <SubmittedAssignmentsTable />}
         </div>
       </div>
     );
@@ -112,10 +115,11 @@ class ViewSubmittedAssignment extends React.Component {
 
 const mapStateToProps = (state) => ({
   assignmentsFetched: state.datasFetched,
-  user: state.auth.user
+  user: state.auth.user,
+  loading: state.loading
 });
 
-export default connect(mapStateToProps, { getSubmittedAssignments, addRemark })(
+export default connect(mapStateToProps, { getSubmittedAssignments, addRemark, setFullpageLoading })(
   ViewSubmittedAssignment
 );
 
