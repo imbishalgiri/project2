@@ -12,14 +12,14 @@ const PostSchema = new Schema({
     required: true
   },
   comments: [
-  {
-    user: {
-      type: String,
-    },
-    des: {
-      type: String
+    {
+      user: {
+        type: String
+      },
+      des: {
+        type: String
+      }
     }
-  }
   ]
 });
 
@@ -31,5 +31,3 @@ const PostSchema = new Schema({
 // });
 
 module.exports = Post = mongoose.model('post', PostSchema);
-
-

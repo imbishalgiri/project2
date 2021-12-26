@@ -1,22 +1,20 @@
 import { FETCH_ALL_DATAS } from './../actions/types';
 
-
 const initialState = {
-	status: 'failed',
-	data: {
-		assignments: []
-	}
+  status: 'failed',
+  data: {
+    assignments: []
+  }
 };
 
 const fetchAllDataReducer = (state = initialState, action) => {
-	switch(action.type) {
+  switch (action.type) {
+    case FETCH_ALL_DATAS:
+      return action.payload;
 
-		case FETCH_ALL_DATAS: 
-			return action.payload;
-
-		default:
-			return state;
-	}
-}
+    default:
+      return state;
+  }
+};
 
 export default fetchAllDataReducer;

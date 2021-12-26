@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'; 
+import { Route } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import store from './store';
 
-
 import setAuthToken from './utils/setAuthToken';
-import { setCurrentUser } from './actions/authActions'; 
+import { setCurrentUser } from './actions/authActions';
 
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
@@ -30,58 +29,47 @@ import PostItems from './components/posts/PostItems';
 
 import './App.css';
 
-
 // check for token
 if (localStorage.jwtToken) {
-	// 1. set the auth token header auth
-	setAuthToken(localStorage.jwtToken);
+  // 1. set the auth token header auth
+  setAuthToken(localStorage.jwtToken);
 
-	// 2. decode token and get user
-	const decoded = jwt_decode(localStorage.jwtToken);
+  // 2. decode token and get user
+  const decoded = jwt_decode(localStorage.jwtToken);
 
-	// 3. set user and isAuthenticated
-	store.dispatch(setCurrentUser(decoded));
+  // 3. set user and isAuthenticated
+  store.dispatch(setCurrentUser(decoded));
 }
 
-
 class App extends Component {
+  render() {
+    return (
+      <div className="App">
+        <Navbar />
 
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/adminlogin" component={AdminLogin} />
+        <Route exact path="/teacherLogin" component={TeacherLogin} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/teacherRegister" component={TeacherRegister} />
 
-	render() {
+        <Route exact path="/confirmCode" component={ConfirmCode} />
+        <Route exact path="/confirmTeacherCode" component={ConfirmTeacherCode} />
 
-		return (
-			
-			    <div className="App">
-			    
-			      <Navbar />
-
-			      <Route exact path="/" component={ Landing } />
-			      <Route exact path="/login" component={ Login } />
-			      <Route exact path="/adminlogin" component={ AdminLogin } />
-			      <Route exact path="/teacherLogin" component={ TeacherLogin } />
-			      <Route exact path="/register" component={ Register } />
-			      <Route exact path="/teacherRegister" component={ TeacherRegister } />
-
-			      <Route exact path="/confirmCode" component={ ConfirmCode } />
-			      <Route exact path="/confirmTeacherCode" component={ ConfirmTeacherCode } />
-
-			      <Route exact path="/routineUpload" component={RoutineUpload} />
-			      <Route exact path="/userUpload" component={UserUpload} />
-			      <Route exact path="/addNotice" component={AddNotice} />
-			      <Route exact path="/notice" component={ViewNotice} />
-			      <Route exact path="/addPreTeacher" component={AddToPreTeacher} />
-			      <Route exact path="/publishassignment" component={PublishAssignment} />
-			      <Route exact path="/viewAssignment" component={ViewAssignment} />
-			      <Route exact path="/ViewSubmittedAssignments" component={ViewSubmittedAssignments} />
-			      <Route exact path="/postitems" component={PostItems} />
-			      <Footer />
-
-			    </div>
-			
-  		);
-
-	}
-  
+        <Route exact path="/routineUpload" component={RoutineUpload} />
+        <Route exact path="/userUpload" component={UserUpload} />
+        <Route exact path="/addNotice" component={AddNotice} />
+        <Route exact path="/notice" component={ViewNotice} />
+        <Route exact path="/addPreTeacher" component={AddToPreTeacher} />
+        <Route exact path="/publishassignment" component={PublishAssignment} />
+        <Route exact path="/viewAssignment" component={ViewAssignment} />
+        <Route exact path="/ViewSubmittedAssignments" component={ViewSubmittedAssignments} />
+        <Route exact path="/postitems" component={PostItems} />
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;
